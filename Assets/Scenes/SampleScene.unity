@@ -773,6 +773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputMoveVec2: {x: 0, y: 0}
   playerModel: {fileID: 919132148326937594}
+  rotationSpeed: 8
 --- !u!1 &836963994
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,7 +962,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.0017988476, y: -0.0000000015043335, z: 2.7060708e-12, w: 0.9999984}
+  m_LocalRotation: {x: 0.0017988476, y: 1.3519114e-10, z: -2.431888e-13, w: 0.9999984}
   m_LocalPosition: {x: 0, y: 1.252, z: -3.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1027,7 +1028,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160926066}
-  m_LocalRotation: {x: 0.0017988512, y: -7.8941015e-10, z: 1.4200338e-12, w: 0.9999984}
+  m_LocalRotation: {x: 0.0017988498, y: 6.8732506e-11, z: -1.2363965e-13, w: 0.9999984}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2772,6 +2773,7 @@ GameObject:
   - component: {fileID: 543450652246501699}
   - component: {fileID: 1453723307}
   - component: {fileID: 919132148326937594}
+  - component: {fileID: 919132148326937595}
   m_Layer: 0
   m_Name: Nostradamus
   m_TagString: Untagged
@@ -2793,6 +2795,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1453723307}
   state: 0
+  characterController: {fileID: 919132148326937595}
+  gravity: -9.8
+  foot: 0
+--- !u!143 &919132148326937595
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148326937593}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.66
+  m_Radius: 0.16
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.83, z: 0}
 --- !u!4 &924971984617090472
 Transform:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class PlayerStateBase : StateBase
 
     public override void Init(IStateMachineOwner owner)
     {
-        playerController = (PlayerController)owner;   
+        playerController = (PlayerController)owner;
         playerModel = playerController.playerModel;
 
     }
@@ -39,6 +39,8 @@ public class PlayerStateBase : StateBase
 
     public override void Update()
     {
+        //施加重力影响
+        playerModel.characterController.Move(new Vector3(0, playerModel.gravity * Time.deltaTime, 0));
         //刷新动画状态信息
         stateInfo = playerModel.animator.GetCurrentAnimatorStateInfo(0);
     }

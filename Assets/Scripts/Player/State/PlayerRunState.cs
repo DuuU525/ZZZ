@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 /// <summary>
 /// 玩家奔跑状态
@@ -32,7 +33,13 @@ public class PlayerRunState : PlayerStateBase
 
         #region 检测攻击
         #endregion
-
+        #region 检测闪避
+        if(playerController.inputSystem.Player.Evade.IsPressed())
+        {
+            //切换闪避状态
+            playerController.SwitchState(PlayerState.Evade_Front);
+        }
+        #endregion
         #region 检测待机
         if (playerController.inputMoveVec2 == Vector2.zero)
         {
@@ -47,7 +54,17 @@ public class PlayerRunState : PlayerStateBase
             //四元数 x 向量
             Vector3 targetDir = Quaternion.Euler(0, cameraAxisY, 0) * inputMoveVec3;
             Quaternion targetQua = Quaternion.LookRotation(targetDir);
-            playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, targetQua, Time.deltaTime * playerController.rotationSpeed);
+            //计算旋转角度
+            float angles = Mathf.Abs(targetQua.eulerAngles.y - playerModel.transform.eulerAngles.y);
+            if (angles > 177.5f && angles < 182.5f)
+            {
+                //切换到转身状态
+                playerController.SwitchState(PlayerState.TurnBack);
+            }
+            else
+            {
+                playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, targetQua, Time.deltaTime * playerController.rotationSpeed);
+            }
             #endregion
         }
         #endregion

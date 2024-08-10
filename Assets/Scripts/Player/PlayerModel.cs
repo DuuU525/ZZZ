@@ -6,7 +6,11 @@ public enum PlayerState
 {
     Idle,
     Run,
-    RunEnd
+    RunEnd,
+    TurnBack,
+    Evade_Front,
+    Evade_Back,
+    EvadeEnd,
 }
 
 public enum ModelFoot
@@ -20,7 +24,10 @@ public class PlayerModel : MonoBehaviour
     
     //玩家状态
     [HideInInspector] public PlayerState state;
-    
+    //角色控制器
+    public CharacterController characterController;
+    //重力
+    public float gravity = -9.8f;
     #region 动画状态
     public ModelFoot foot = ModelFoot.Right;
     /// <summary>

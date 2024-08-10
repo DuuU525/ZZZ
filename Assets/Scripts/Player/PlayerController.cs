@@ -15,6 +15,8 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     public PlayerModel playerModel;
     //转向速度
     public float rotationSpeed = 8f;
+    //闪避计时器
+    private float evadeTimer = 1f;
     private StateMachine stateMachine;
     protected override void Awake()
     {
@@ -45,6 +47,21 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             case PlayerState.RunEnd:
                 stateMachine.EnterState<PlayerRunEndState>();
                 break;
+            case PlayerState.TurnBack:
+                stateMachine.EnterState<PlayerTurnBackState>();
+                break;
+            case PlayerState.Evade_Front:
+            case PlayerState.Evade_Back:
+                if (evadeTimer != 1f)
+                {
+                    return;
+                }
+                stateMachine.EnterState<PlayerEvadeState>();
+                evadeTimer -= 1f;
+                break;
+            case PlayerState.EvadeEnd:
+                stateMachine.EnterState<PlayerEvadeEndState>();
+                break;
         }
         playerModel.state = playerState;
     }
@@ -74,6 +91,14 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     {
         //更新玩家的移动输入
         inputMoveVec2 = inputSystem.Player.Move.ReadValue<Vector2>().normalized;
+        if (evadeTimer < 1f)
+        {
+            evadeTimer += Time.deltaTime;
+            if (evadeTimer > 1f)
+            {
+                evadeTimer = 1f;
+            }
+        }
     }
 
     private void LockMouse()

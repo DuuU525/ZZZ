@@ -29,6 +29,14 @@ public class PlayerRunEndState : PlayerStateBase
     {
         base.Update();
 
+        #region 检测闪避
+        if(playerController.inputSystem.Player.Evade.IsPressed())
+        {
+            //切换闪避状态
+            playerController.SwitchState(PlayerState.Evade_Back);
+        }
+        #endregion
+
         #region 移动监测
         if(playerController.inputMoveVec2 != Vector2.zero)
         {
