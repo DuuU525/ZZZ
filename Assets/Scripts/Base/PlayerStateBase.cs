@@ -8,12 +8,14 @@ public class PlayerStateBase : StateBase
     protected PlayerController playerController;
     //玩家模型
     protected PlayerModel playerModel;
-
+    //动画信息
+    protected AnimatorStateInfo stateInfo;
 
     public override void Init(IStateMachineOwner owner)
     {
         playerController = (PlayerController)owner;   
         playerModel = playerController.playerModel;
+
     }
     public override void Enter()
     {
@@ -37,5 +39,7 @@ public class PlayerStateBase : StateBase
 
     public override void Update()
     {
+        //刷新动画状态信息
+        stateInfo = playerModel.animator.GetCurrentAnimatorStateInfo(0);
     }
 }

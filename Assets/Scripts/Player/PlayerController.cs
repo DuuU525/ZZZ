@@ -24,6 +24,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     }
     private void Start()
     {
+        LockMouse();
         //切换到待机状态
         SwitchState(PlayerState.Idle);
     }
@@ -41,6 +42,9 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             case PlayerState.Run:
                 stateMachine.EnterState<PlayerRunState>();
                 break;
+            case PlayerState.RunEnd:
+                stateMachine.EnterState<PlayerRunEndState>();
+                break;
         }
         playerModel.state = playerState;
     }
@@ -55,10 +59,29 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
         playerModel.animator.CrossFadeInFixedTime(animationName, fixeTransitionDuration);
     }
 
+    /// <summary>
+    /// 播放动画
+    /// </summary>
+    /// <param name="animationName">动画名称</param>
+    /// <param name="fixeTransitionDuration">过渡时间</param>
+    /// <param name="fixedTimeOffect">动画起始播放偏移</param>
+    public void PlayAnimation(string animationName, float fixeTransitionDuration, float fixedTimeOffect)
+    {
+        playerModel.animator.CrossFadeInFixedTime(animationName, fixeTransitionDuration, 0, fixedTimeOffect);
+    }
+
     private void Update()
     {
         //更新玩家的移动输入
         inputMoveVec2 = inputSystem.Player.Move.ReadValue<Vector2>().normalized;
+    }
+
+    private void LockMouse()
+    {
+        //光标锁定
+        Cursor.lockState = CursorLockMode.Locked;
+        //隐藏光标
+        Cursor.visible = false;
     }
 
     private void OnEnable()

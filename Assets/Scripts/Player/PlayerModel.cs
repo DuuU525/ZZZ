@@ -6,22 +6,36 @@ public enum PlayerState
 {
     Idle,
     Run,
+    RunEnd
+}
+
+public enum ModelFoot
+{
+    Right,
+    Left
 }
 public class PlayerModel : MonoBehaviour
 {
     public Animator animator;
-    [HideInInspector]
+    
     //玩家状态
-    public PlayerState state;
-    // Start is called before the first frame update
-    void Start()
+    [HideInInspector] public PlayerState state;
+    
+    #region 动画状态
+    public ModelFoot foot = ModelFoot.Right;
+    /// <summary>
+    /// 迈出左脚
+    /// </summary>
+    public void SetOutLeftFoot()
     {
-        
+        foot = ModelFoot.Left;
     }
-
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// 迈出右脚
+    /// </summary>
+    public void SetOutRightFoot()
     {
-        
+        foot = ModelFoot.Right;
     }
+    #endregion
 }
