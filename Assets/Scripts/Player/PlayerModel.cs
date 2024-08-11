@@ -2,22 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerState
-{
-    Idle,
-    Run,
-    RunEnd,
-    TurnBack,
-    Evade_Front,
-    Evade_Back,
-    EvadeEnd,
-}
 
 public enum ModelFoot
 {
     Right,
     Left
 }
+
 public class PlayerModel : MonoBehaviour
 {
     public Animator animator;
@@ -28,6 +19,14 @@ public class PlayerModel : MonoBehaviour
     public CharacterController characterController;
     //重力
     public float gravity = -9.8f;
+    //技能配置文件
+    public SkillConfig skillConfig;
+
+    //大招Start镜头
+    public GameObject bigSkillStartShot;
+    //大招收尾镜头
+    public GameObject bigSkillShot;
+
     #region 动画状态
     public ModelFoot foot = ModelFoot.Right;
     /// <summary>

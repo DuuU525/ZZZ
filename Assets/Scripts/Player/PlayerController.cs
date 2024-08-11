@@ -62,6 +62,21 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             case PlayerState.EvadeEnd:
                 stateMachine.EnterState<PlayerEvadeEndState>();
                 break;
+            case PlayerState.NormalAttack:
+                stateMachine.EnterState<PlayerNormalAttackState>();
+                break;
+            case PlayerState.NormalAttackEnd:
+                stateMachine.EnterState<PlayerNormalAttackEndState>();
+                break;
+            case PlayerState.BigSkillStart:
+                stateMachine.EnterState<PlayerBigSkillStartState>();
+                break;
+            case PlayerState.BigSkill:
+                stateMachine.EnterState<PlayerBigSkillState>();
+                break;
+            case PlayerState.BigSkillEnd:
+                stateMachine.EnterState<PlayerBigSkillEndState>();
+                break;
         }
         playerModel.state = playerState;
     }
