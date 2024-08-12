@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -18,11 +19,33 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     //闪避计时器
     private float evadeTimer = 1f;
     private StateMachine stateMachine;
+    //玩家信息
+    public PlayerConfig playerConfig;
+    //配队
+    private List<PlayerModel> controllableModels;
+    //当前操控的角色下标
+    private int currentModelIndex;
     protected override void Awake()
     {
         base.Awake();
         stateMachine = new StateMachine(this);
         inputSystem = new InputSystem();
+        controllableModels = new List<PlayerModel>();
+
+        #region 生成角色模型
+        for (int i = 0; i < playerConfig.models.Length; i++)
+        {
+            GameObject model = Instantiate(playerConfig.models[i], transform);
+            model.gameObject.SetActive(false);
+            controllableModels.Add(model.GetComponent<PlayerModel>());
+        }
+        #endregion
+
+        #region 操控配队中第一个角色
+        currentModelIndex = 0;
+        controllableModels[currentModelIndex].gameObject.SetActive(true);
+        playerModel = controllableModels[currentModelIndex];
+        #endregion
     }
     private void Start()
     {
@@ -39,10 +62,10 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
         switch (playerState)
         {
             case PlayerState.Idle:
-                stateMachine.EnterState<PlayerIdleState>();
+                stateMachine.EnterState<PlayerIdleState>(true);
                 break;
             case PlayerState.Run:
-                stateMachine.EnterState<PlayerRunState>();
+                stateMachine.EnterState<PlayerRunState>(true);
                 break;
             case PlayerState.RunEnd:
                 stateMachine.EnterState<PlayerRunEndState>();
@@ -63,7 +86,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
                 stateMachine.EnterState<PlayerEvadeEndState>();
                 break;
             case PlayerState.NormalAttack:
-                stateMachine.EnterState<PlayerNormalAttackState>();
+                stateMachine.EnterState<PlayerNormalAttackState>(true);
                 break;
             case PlayerState.NormalAttackEnd:
                 stateMachine.EnterState<PlayerNormalAttackEndState>();

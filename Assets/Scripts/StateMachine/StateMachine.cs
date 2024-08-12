@@ -38,10 +38,10 @@ public class StateMachine
     /// 进入状态
     /// </summary>
     /// <typeparam name="T">状态类型</typeparam>
-    public void EnterState<T>() where T : StateBase, new()
+    public void EnterState<T>(bool _forceRefresh = false) where T : StateBase, new()
     {
         //如果状态一致则不进行切换
-        if (HasState && currentState.GetType() == typeof(T))
+        if (!_forceRefresh && HasState && currentState.GetType() == typeof(T))
         {
             return;
         }
