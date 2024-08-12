@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchModel",
+                    "type": "Button",
+                    "id": "6e76b632-91b4-48a6-a41c-a81a1abba164",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -302,6 +311,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "BigSkill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b240101d-b0d1-44c6-a152-48ed96aa1490",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchModel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

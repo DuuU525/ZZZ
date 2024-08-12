@@ -59,6 +59,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     /// <param name="playerState">状态</param>
     public void SwitchState(PlayerState playerState)
     {
+        playerModel.currentState = playerState;
         switch (playerState)
         {
             case PlayerState.Idle:
@@ -83,6 +84,8 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
                 evadeTimer -= 1f;
                 break;
             case PlayerState.EvadeEnd:
+            case PlayerState.Evade_Back_End:
+            case PlayerState.Evade_Front_End:
                 stateMachine.EnterState<PlayerEvadeEndState>();
                 break;
             case PlayerState.NormalAttack:
@@ -100,8 +103,37 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             case PlayerState.BigSkillEnd:
                 stateMachine.EnterState<PlayerBigSkillEndState>();
                 break;
+            case PlayerState.SwitchInNormal:
+                stateMachine.EnterState<PlayerSwitchInNormalState>(true);
+                break;
         }
-        playerModel.state = playerState;
+    }
+
+    /// <summary>
+    /// 切换到下一个角色
+    /// </summary>
+    public void SwitchNextModel()
+    {
+        //刷新状态机
+        stateMachine.Clear();
+        //退出当前模型
+        playerModel.Exit();
+        #region  控制下一个模型
+        currentModelIndex++;
+        if (currentModelIndex >= controllableModels.Count)
+        {
+            currentModelIndex = 0;
+        }
+        PlayerModel nextModel = controllableModels[currentModelIndex];
+        nextModel.gameObject.SetActive(true);
+        Vector3 prevPos = playerModel.transform.position;
+        Quaternion prevRot = playerModel.transform.rotation;
+        playerModel = nextModel;
+        #endregion
+        //进入下一个模型
+        playerModel.Enter(prevPos, prevRot);
+        //切换到入场状态
+        SwitchState(PlayerState.SwitchInNormal);
     }
 
     /// <summary>

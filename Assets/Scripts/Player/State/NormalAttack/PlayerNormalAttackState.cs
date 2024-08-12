@@ -23,7 +23,7 @@ public class PlayerNormalAttackState : PlayerStateBase
         base.Update();
 
         //检测是否直接进行下一段攻击
-        if (stateInfo.normalizedTime >= 0.5f && playerController.inputSystem.Player.Fire.triggered)
+        if (NormalizedTime() >= 0.5f && playerController.inputSystem.Player.Fire.triggered)
         {
             enterNextAttack = true;
         }

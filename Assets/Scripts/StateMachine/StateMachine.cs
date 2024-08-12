@@ -97,9 +97,9 @@ public class StateMachine
     }
 
     /// <summary>
-    /// 停止运作，释放资源
+    /// 刷新状态机
     /// </summary>
-    public void Stop()
+    public void Clear()
     {
         ExitCurrentState();
         foreach (var item in stateDic.Values)

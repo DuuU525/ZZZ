@@ -11,7 +11,7 @@ public class PlayerEvadeState : PlayerStateBase
     {
         base.Enter();
         #region 判断前后闪避
-        switch (playerModel.state)
+        switch (playerModel.currentState)
         {
             case PlayerState.Idle:
             case PlayerState.RunEnd:
@@ -22,7 +22,7 @@ public class PlayerEvadeState : PlayerStateBase
                 playerController.PlayAnimation("Evade_Front");
                 break;
             case PlayerState.TurnBack:
-            
+
                 break;
         }
         #endregion
@@ -31,10 +31,24 @@ public class PlayerEvadeState : PlayerStateBase
     public override void Update()
     {
         base.Update();
-        
+
         #region 检测动画是否结束
-        if(IsAnimationEnd())
+        if (IsAnimationEnd())
         {
+            switch (playerModel.currentState)
+            {
+                case PlayerState.Evade_Front:
+                    if (playerController.inputSystem.Player.Evade.IsPressed())
+                    {
+                        playerController.SwitchState(PlayerState.Run);
+                        return;
+                    }
+                    playerController.SwitchState(PlayerState.Evade_Front_End);
+                    break;
+                case PlayerState.Evade_Back:
+                    playerController.SwitchState(PlayerState.Evade_Back_End);
+                    break;
+            }
             playerController.SwitchState(PlayerState.EvadeEnd);
             return;
         }

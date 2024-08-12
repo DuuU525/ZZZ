@@ -1,32 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
-/// 玩家闪避结束状态
+/// 角色普通入场状态
 /// </summary>
-public class PlayerEvadeEndState : PlayerStateBase
+public class PlayerSwitchInNormalState : PlayerStateBase
 {
     public override void Enter()
     {
         base.Enter();
 
-        #region  判断前后闪避
-        switch (playerModel.currentState)
-        {
-            case PlayerState.Evade_Front:
-                playerController.PlayAnimation("Evade_Front_End");
-                break;
-            case PlayerState.Evade_Back:
-                playerController.PlayAnimation("Evade_Back_End");
-                break;
-        }
-        #endregion
+        playerController.PlayAnimation("SwitchIn_Normal", 0f);
     }
 
-    public override void Update()
+     public override void Update()
     {
         base.Update();
-        
+
+
         #region 检测大招
         if(playerController.inputSystem.Player.BigSkill.triggered)
         {
@@ -43,19 +33,29 @@ public class PlayerEvadeEndState : PlayerStateBase
             return;
         }
         #endregion
-        #region 移动监测
+
+        #region 检测闪避
+        if(playerController.inputSystem.Player.Evade.triggered)
+        {
+            //切换闪避状态
+            playerController.SwitchState(PlayerState.Evade_Back);
+            return;
+        }
+        #endregion
+        #region 监听移动
         if(playerController.inputMoveVec2 != Vector2.zero)
         {
+            //切换到奔跑状态
             playerController.SwitchState(PlayerState.Run);
             return;
         }
         #endregion
 
-        #region 动画是否播放结束
+        #region 检测动画是否结束
         if(IsAnimationEnd())
         {
+            //切换到待机
             playerController.SwitchState(PlayerState.Idle);
-            return;
         }
         #endregion
     }

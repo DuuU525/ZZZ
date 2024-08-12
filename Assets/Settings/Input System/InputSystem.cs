@@ -71,6 +71,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchModel"",
+                    ""type"": ""Button"",
+                    ""id"": ""6e76b632-91b4-48a6-a41c-a81a1abba164"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -324,6 +333,17 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BigSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b240101d-b0d1-44c6-a152-48ed96aa1490"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchModel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -916,6 +936,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Evade = m_Player.FindAction("Evade", throwIfNotFound: true);
         m_Player_BigSkill = m_Player.FindAction("BigSkill", throwIfNotFound: true);
+        m_Player_SwitchModel = m_Player.FindAction("SwitchModel", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -994,6 +1015,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Evade;
     private readonly InputAction m_Player_BigSkill;
+    private readonly InputAction m_Player_SwitchModel;
     public struct PlayerActions
     {
         private @InputSystem m_Wrapper;
@@ -1003,6 +1025,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Evade => m_Wrapper.m_Player_Evade;
         public InputAction @BigSkill => m_Wrapper.m_Player_BigSkill;
+        public InputAction @SwitchModel => m_Wrapper.m_Player_SwitchModel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1027,6 +1050,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @BigSkill.started += instance.OnBigSkill;
             @BigSkill.performed += instance.OnBigSkill;
             @BigSkill.canceled += instance.OnBigSkill;
+            @SwitchModel.started += instance.OnSwitchModel;
+            @SwitchModel.performed += instance.OnSwitchModel;
+            @SwitchModel.canceled += instance.OnSwitchModel;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1046,6 +1072,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @BigSkill.started -= instance.OnBigSkill;
             @BigSkill.performed -= instance.OnBigSkill;
             @BigSkill.canceled -= instance.OnBigSkill;
+            @SwitchModel.started -= instance.OnSwitchModel;
+            @SwitchModel.performed -= instance.OnSwitchModel;
+            @SwitchModel.canceled -= instance.OnSwitchModel;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1233,6 +1262,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnEvade(InputAction.CallbackContext context);
         void OnBigSkill(InputAction.CallbackContext context);
+        void OnSwitchModel(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
