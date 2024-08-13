@@ -25,6 +25,8 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     private List<PlayerModel> controllableModels;
     //当前操控的角色下标
     private int currentModelIndex;
+    //敌人标签列表
+    private List<string> enemyTagList;
     protected override void Awake()
     {
         base.Awake();
@@ -38,6 +40,8 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             GameObject model = Instantiate(playerConfig.models[i], transform);
             model.gameObject.SetActive(false);
             controllableModels.Add(model.GetComponent<PlayerModel>());
+            //初始化角色模型
+            controllableModels[i].Init(enemyTagList);
         }
         #endregion
 
@@ -59,7 +63,6 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     /// <param name="playerState">状态</param>
     public void SwitchState(PlayerState playerState)
     {
-        playerModel.currentState = playerState;
         switch (playerState)
         {
             case PlayerState.Idle:
@@ -107,6 +110,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
                 stateMachine.EnterState<PlayerSwitchInNormalState>(true);
                 break;
         }
+        playerModel.currentState = playerState;
     }
 
     /// <summary>

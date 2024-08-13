@@ -11,8 +11,12 @@ public enum ModelFoot
     Left
 }
 
-public class PlayerModel : MonoBehaviour
+/// <summary>
+/// 玩家模型
+/// </summary>
+public class PlayerModel : MonoBehaviour, IHurt
 {
+    //动画
     [HideInInspector] public Animator animator;
 
     //玩家状态
@@ -28,19 +32,39 @@ public class PlayerModel : MonoBehaviour
     public GameObject bigSkillStartShot;
     //大招收尾镜头
     public GameObject bigSkillShot;
-
+    //武器列表
+    public WeaponController[] weapons;
     private void Awake()
     {
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
     }
 
+    /// <summary>
+    /// 初始化武器
+    /// </summary>
+    /// <param name="enemyTagList"></param>
+    public void Init(List<string> enemyTagList)
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weapons[i].Init(enemyTagList, OnHit);
+        }
+    }
+
+    /// <summary>
+    /// 命中事件
+    /// </summary>
+    private void OnHit(IHurt enemy)
+    {
+        Debug.Log(((Component)enemy).name);
+    }
     #region 动画状态
     [HideInInspector] public ModelFoot foot = ModelFoot.Right;
 
     //动画信息
     protected AnimatorStateInfo stateInfo;
-    
+
 
     /// <summary>
     /// 进入模型
