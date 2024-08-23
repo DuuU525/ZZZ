@@ -14,6 +14,28 @@ public class PlayerNormalAttackState : PlayerStateBase
         base.Enter();
 
         enterNextAttack = false;
+        #region 锁定敌人
+        GameObject targetEnemy = null;
+        float minDistance = Mathf.Infinity;
+        foreach (var tag in playerController.enemyTagList)
+        {
+            var gameEnemis = GameObject.FindGameObjectsWithTag(tag);
+            foreach (var enemy in gameEnemis)
+            {
+                float distance = Vector3.Distance(playerModel.transform.position, enemy.transform.position);
+                if (distance < minDistance)
+                {
+                    targetEnemy = enemy;
+                    minDistance = distance;
+                }
+            }
+        }
+        if (targetEnemy != null)
+        {
+            var direction = (targetEnemy.transform.position - playerModel.transform.position).normalized;
+            playerModel.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        }
+        #endregion
         //播放攻击动画
         playerController.PlayAnimation("Attack_Normal_" + playerModel.skillConfig.currentNormalAttackIndex);
     }

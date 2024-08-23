@@ -26,7 +26,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     //当前操控的角色下标
     private int currentModelIndex;
     //敌人标签列表
-    private List<string> enemyTagList;
+    public List<string> enemyTagList;
     protected override void Awake()
     {
         base.Awake();

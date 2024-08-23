@@ -59,6 +59,23 @@ public class PlayerModel : MonoBehaviour, IHurt
     {
         Debug.Log(((Component)enemy).name);
     }
+
+
+    /// <summary>
+    /// 开启触发器
+    /// </summary>
+    public void StartHit(int weaponIndex)
+    {
+        weapons[weaponIndex].StartHit(); 
+    }
+
+    /// <summary>
+    /// 关闭伤害检测
+    /// </summary>
+    public void StopHit(int weaponIndex)
+    {
+        weapons[weaponIndex].StopHit();   
+    }
     #region 动画状态
     [HideInInspector] public ModelFoot foot = ModelFoot.Right;
 
