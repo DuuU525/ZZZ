@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +36,7 @@ public class WeaponController : MonoBehaviour
     public void StopHit()
     {
         hitCollider.enabled = false;
+        enemyHurtList.Clear();
     }
 
     private void OnTriggerStay(Collider other)
@@ -44,7 +45,7 @@ public class WeaponController : MonoBehaviour
         if (enemyTagList.Contains(other.tag))
         {
             IHurt enemy = other.GetComponent<IHurt>();
-            if (enemy != null)
+            if (enemy != null && !enemyHurtList.Contains(enemy))
             {
                 enemyHurtList.Add(enemy);
                 #region 让敌人受击
@@ -54,7 +55,10 @@ public class WeaponController : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"该受击对象{other.name}不包含受击接口");
+                if(!enemyHurtList.Contains(enemy))
+                {
+                    Debug.LogError($"该受击对象{other.name}不包含受击接口");
+                }
             }
         }
     }
